@@ -171,13 +171,15 @@ defmodule PrimerLive.Helpers.FormHelpers do
       ...>   }, :work_experience)
       ["invalid value"]
   """
-  def get_field_errors(changeset, field) do
-    changeset.errors
+  def get_field_errors(%{errors: errors}, field) do
+    errors
     |> Enum.filter(fn {error_field, _content} -> error_field == field end)
     |> Enum.map(fn {_error_field, {content, details}} ->
       interpolate_error_detials(content, details)
     end)
   end
+
+  def get_field_errors(_form_data, _field), do: []
 
   @doc """
   Get the input type atom from a name, e.g. "search" returns :search_input
