@@ -92,12 +92,17 @@ defmodule PrimerLive.Helpers.FormHelpers do
          field_state <- %{
            field_state
            | valid?: valid?,
-             ignore_errors?: is_nil(changeset.action) && !valid?,
+             ignore_errors?: is_nil(Map.get(changeset, :action)) && !valid?,
              field_errors: field_errors,
              changeset: changeset
          },
          message <-
-           get_message(changeset.action, field_errors, field_state, validation_message_fn) do
+           get_message(
+             Map.get(changeset, :action),
+             field_errors,
+             field_state,
+             validation_message_fn
+           ) do
       %{field_state | message: message}
     end
   end
